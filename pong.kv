@@ -1,0 +1,19 @@
+# Soubor .kv obsahuje nastavení grafického rozhraní aplikace v Kivy
+# Využívá specifický kivy language (https://kivy.org/doc/stable/guide/lang.html)
+
+# Widget-obrazovka s menu
+<MenuScreen>:
+    # Layout typu BoxLayout obsahuje dvě tlačítka
+    BoxLayout:
+        Button:
+            text: 'Start'
+            on_press:
+                root.manager.current = 'canvas'
+        Button:
+            text: 'Quit'
+            on_press: app.stop()
+
+# Widget-obrazovka pro zobrazení canvasu
+<CanvasScreen>:
+    on_enter:
+        pass
