@@ -1,6 +1,58 @@
 # Soubor .kv obsahuje nastavení grafického rozhraní aplikace v Kivy
 # Využívá specifický kivy language (https://kivy.org/doc/stable/guide/lang.html)
 
+# Objekt míče
+<PongBall>
+    size: 16, 16
+    canvas:
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+# Objekt pálky (hráče)
+<PongPaddle>
+    size: 16, 80
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+# Objekt hry
+<PongGame>:
+    ball: pong_ball
+    player1: player_left
+    player2: player_right
+    canvas:
+        Rectangle:
+            pos: self.center_x - 5, 0
+            size: 10, self.height
+
+    Label:
+        font_size : 70
+        center_x : root.width / 4
+        top: root.top - 50
+        # text: str(root.player1.score)
+
+    Label:
+        font_size : 70
+        center_x : root.width * 3/4
+        top: root.top - 50
+        # text: str(root.player2.score)
+
+    PongBall:
+        id: pong_ball
+        center: self.parent.center
+
+    PongPaddle:
+        id: player_left
+        x: root.x
+        center_y : root.center_y
+
+    PongPaddle:
+        id: player_right
+        x: root.width - self.width
+        center_y : root.center_y
+
 # Widget-obrazovka s menu
 <MenuScreen>:
     # Layout typu BoxLayout obsahuje dvě tlačítka
@@ -16,4 +68,4 @@
 # Widget-obrazovka pro zobrazení canvasu
 <CanvasScreen>:
     on_enter:
-        pass
+        root.start_game()

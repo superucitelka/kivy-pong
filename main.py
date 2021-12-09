@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
-
+from game import PongGame
 
 # Třída pro obrazovku s menu
 class MenuScreen(Screen):
@@ -11,7 +11,19 @@ class MenuScreen(Screen):
 
  # Třída pro obrazovku s plátnem - budoucí hrací plocha
 class CanvasScreen(Screen):
-    pass
+    def start_game(self):
+        try:
+            if not self.manager.playing[0]:
+                self.manager.models[0] = None
+            if not self.manager.playing[1]:
+                self.manager.models[1] = None
+            game = PongGame(self.manager.models)
+        except:
+            self.manager.models = [None, None]
+            game = PongGame(self.manager.models)
+
+        self.add_widget(game)
+        game.start()
 
 
 class PongApp(App):
