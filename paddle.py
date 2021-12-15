@@ -1,5 +1,6 @@
+from kivy.core.audio import SoundLoader
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty, StringProperty, BooleanProperty
 from kivy.vector import Vector
 
 """
@@ -16,10 +17,15 @@ from kivy.vector import Vector
 
 class PongPaddle(Widget):
     score = NumericProperty(0)
+    name = StringProperty(defaultvalue='Player')
+    state = StringProperty(defaultvalue='CS')
     speed = NumericProperty(4)
+    ai = BooleanProperty(False)
+    quality = NumericProperty(2)
     up = False
     down = False
     last_score = NumericProperty(0)
+    ping_sound = SoundLoader.load('sounds/ping.mp3')
 
     # Metoda pro odražení míčku
     def bounce_ball(self, ball, width):
@@ -37,6 +43,7 @@ class PongPaddle(Widget):
             # Odrazí míček od pádla a to až o 60° (ze středu pádla 0°, z kraje pádla 60°)
             ball.velocity = Vector(direction * ball.speed, 0).rotate(
                 (ball.y + ball.height / 2 - self.y - self.height / 2)/self.height * (60 * direction))
+            self.ping_sound.play()
             return True
         return False
 

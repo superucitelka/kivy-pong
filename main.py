@@ -1,12 +1,24 @@
 from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.config import Config
 from kivy.core.window import Window
-from kivy.uix.screenmanager import ScreenManager, Screen
 from game import PongGame
+import random
+from kivy.core.text import LabelBase
+
+# Registrace uživatelských fontů
+LabelBase.register(name='Monoton', fn_regular='fonts/Monoton-Regular.ttf')
+LabelBase.register(name='Bungee', fn_regular='fonts/BungeeShade-Regular.ttf')
+LabelBase.register(name='Fredericka', fn_regular='fonts/FrederickatheGreat-Regular.ttf')
 
 # Třída pro obrazovku s menu
 class MenuScreen(Screen):
-    pass
+    STATES = ['ARG', 'AUS', 'AUT', 'BEL', 'BLR', 'BRA', 'BUL', 'CAN', 'COL', 'CRO', 'CUB', 'CZE', 'DEN', 'EGY', 'ESP',
+              'EST', 'FIN', 'FRA', 'GBR', 'GER', 'GRE', 'HUN', 'CHN', 'IND', 'IRL', 'IRN', 'ISL', 'ISR', 'ITA', 'JAP',
+              'KOR', 'LAT', 'LIT', 'MAR', 'MEX', 'NED', 'NGR', 'NOR', 'NZL', 'PAK', 'POL', 'POR', 'ROM', 'RUS', 'SLO',
+              'SRB', 'SUI', 'SVK', 'SWE', 'TUN', 'TUR', 'UKR', 'URU', 'USA']
+    left_index = random.randrange(0, int(len(STATES) / 2))
+    right_index = random.randrange(int(len(STATES) / 2), len(STATES))
 
 
  # Třída pro obrazovku s plátnem - budoucí hrací plocha
@@ -17,13 +29,13 @@ class CanvasScreen(Screen):
                 self.manager.models[0] = None
             if not self.manager.playing[1]:
                 self.manager.models[1] = None
-            game = PongGame(self.manager.models)
+            self.game = PongGame(self.manager.models)
         except:
             self.manager.models = [None, None]
-            game = PongGame(self.manager.models)
+            self.game = PongGame(self.manager.models)
 
-        self.add_widget(game)
-        game.start()
+        self.add_widget(self.game)
+        self.game.start()
 
 
 class PongApp(App):
